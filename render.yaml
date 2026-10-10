@@ -1,0 +1,100 @@
+envVarGroups:
+  - name: fixora-shared
+    envVars:
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: INTERNAL_API_KEY
+        generateValue: true
+      - key: GATEWAY_KEY
+        generateValue: true
+
+services:
+  - type: web
+    name: fixora-mail
+    runtime: node
+    plan: free
+    rootDir: Backend/services/mail-service
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - fromGroup: fixora-shared
+      - key: NODE_ENV
+        value: production
+      - key: BREVO_API_KEY
+        sync: false
+      - key: MAIL_USER
+        sync: false
+
+  - type: web
+    name: fixora-auth
+    runtime: node
+    plan: free
+    rootDir: Backend/services/auth-service
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - fromGroup: fixora-shared
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "2"
+      - key: MONGO_URI
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: MAIL_SERVICE_URL
+        sync: false
+
+  - type: web
+    name: fixora-booking
+    runtime: node
+    plan: free
+    rootDir: Backend/services/booking-service
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - fromGroup: fixora-shared
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: MAIL_SERVICE_URL
+        sync: false
+
+  - type: web
+    name: fixora-gateway
+    runtime: node
+    plan: free
+    rootDir: Backend/services/api-gateway
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - fromGroup: fixora-shared
+      - key: NODE_ENV
+        value: production
+      - key: AUTH_SERVICE_URL
+        sync: false
+      - key: BOOKING_SERVICE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  - type: web
+    name: fixora-web
+    runtime: static
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://fixora-gateway.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

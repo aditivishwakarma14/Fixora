@@ -12,5 +12,6 @@ export const config = {
     FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:5173",
     AUTH_SERVICE_URL: process.env.AUTH_SERVICE_URL || "http://localhost:3001",
     BOOKING_SERVICE_URL: process.env.BOOKING_SERVICE_URL || "http://localhost:3002",
-    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    GATEWAY_KEY: process.env.GATEWAY_KEY || ""
 }

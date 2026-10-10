@@ -7,6 +7,11 @@ const PORT = config.PORT;
 app.listen(PORT, () => {
     console.log(`Mail service listening on port ${PORT}`);
 
+    if (config.USE_BREVO) {
+        console.log(`Sending mail with the Brevo API as ${config.MAIL_USER}`)
+        return
+    }
+
     // tell the developer immediately if the Gmail login is wrong
     transporter.verify()
         .then(() => console.log("SMTP login OK, emails can be sent"))

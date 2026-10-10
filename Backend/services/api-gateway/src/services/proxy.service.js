@@ -1,4 +1,5 @@
 import proxy from "express-http-proxy";
+import { config } from "../config/config.js";
 
 /**
  * Create a proxy to a downstream service.
@@ -12,6 +13,11 @@ export function createProxy(target, prefix, serviceName) {
 
         proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
             proxyReqOpts.headers[ "x-forwarded-for" ] = srcReq.ip
+
+            // proves to the service that the call came from this gateway
+            if (config.GATEWAY_KEY) {
+                proxyReqOpts.headers[ "x-gateway-key" ] = config.GATEWAY_KEY
+            }
 
             if (srcReq.user) {
                 proxyReqOpts.headers[ "x-user" ] = JSON.stringify(srcReq.user)

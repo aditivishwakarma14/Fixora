@@ -12,6 +12,9 @@ import { config } from "./config/config.js";
 
 const app = express();
 
+// number of proxy hops in front of the gateway (Render adds one)
+app.set("trust proxy", Number(process.env.TRUST_PROXY) || 1);
+
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cookieParser());
