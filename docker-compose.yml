@@ -1,0 +1,20 @@
+# MongoDB and Redis for local development:  npm run db:up
+services:
+  mongo:
+    image: mongo:7
+    container_name: fixora-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - fixora-mongo-data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: fixora-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  fixora-mongo-data:

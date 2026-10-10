@@ -1,0 +1,19 @@
+{
+    "name": "mail-service",
+    "version": "1.0.0",
+    "description": "Fixora mail service",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "dev": "npx nodemon server.js",
+        "start": "node server.js"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^17.4.1",
+        "express": "^5.2.1",
+        "express-validator": "^7.3.2",
+        "morgan": "^1.10.1",
+        "nodemailer": "^7.0.3"
+    }
+}

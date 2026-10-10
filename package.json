@@ -1,0 +1,23 @@
+{
+    "name": "fixora",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Fixora, a local services marketplace (MERN, microservices)",
+    "type": "module",
+    "scripts": {
+        "setup": "npm run install:all && npm run env:init",
+        "install:all": "npm install && npm --prefix Backend/services/api-gateway install && npm --prefix Backend/services/auth-service install && npm --prefix Backend/services/booking-service install && npm --prefix Backend/services/mail-service install && npm --prefix Frontend install",
+        "env:init": "node scripts/init-env.mjs",
+        "db:up": "docker compose up -d",
+        "db:down": "docker compose down",
+        "dev": "concurrently -k -n mail,auth,booking,gateway,web -c yellow,cyan,magenta,green,blue \"npm --prefix Backend/services/mail-service run dev\" \"npm --prefix Backend/services/auth-service run dev\" \"npm --prefix Backend/services/booking-service run dev\" \"npm --prefix Backend/services/api-gateway run dev\" \"npm --prefix Frontend run dev\"",
+        "build": "npm --prefix Frontend run build",
+        "lint": "npm --prefix Frontend run lint"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    },
+    "engines": {
+        "node": ">=20"
+    }
+}
